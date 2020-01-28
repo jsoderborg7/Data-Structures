@@ -1,3 +1,5 @@
+from doubly_linked_list import DoublyLinkedList
+
 class LRUCache:
     """
     Our LRUCache class keeps track of the max number of nodes it
@@ -7,7 +9,14 @@ class LRUCache:
     to every node stored in the cache.
     """
     def __init__(self, limit=10):
-        pass
+    # assign max size of cache with default limit
+        self.limit = limit
+    # assign cache start size
+        self.size = 0
+    # order the list
+        self.order = DoublyLinkedList()
+    # store keys and values
+        self.storage = {}
 
     """
     Retrieves the value associated with the given key. Also
@@ -17,7 +26,16 @@ class LRUCache:
     key-value pair doesn't exist in the cache.
     """
     def get(self, key):
-        pass
+    # check the storage for the key
+        if key in self.storage:
+    # if found, set as node for look up
+            node = self.storage[key]
+    # use the DLL method move-to-end to move the node from its current position to the end front of the list
+            self.order.move_to_end(node)
+            return node.value[1]
+    # if the key isn't in the cache, return nothing
+        else:
+            return None
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -30,4 +48,24 @@ class LRUCache:
     the newly-specified value.
     """
     def set(self, key, value):
-        pass
+    # check storage for key
+        if key in self.storage:
+    # if it's there, set it as the node
+            node = self.storage[key]
+    # store the node value as a tuple
+            node.value = (key, value)
+    # move it to the end
+            self.order.move_to_end(node)
+            return
+    # if it is in the cache, move it to the front
+        if self.size == self.limit:
+            del self.storage[self.order.head.value[0]]
+            self.order.remove_from_head()
+            self.size -= 1
+    # if it's not in the cache, add to the front of the cache
+        self.order.add_to_tail((key, value))
+        self.storage[key] = self.order.tail
+        self.size += 1
+
+
+
