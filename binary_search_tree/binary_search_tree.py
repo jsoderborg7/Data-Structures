@@ -92,18 +92,26 @@ class BinarySearchTree:
         while stack.size != 0:
             popped = stack.pop()
             print(popped.value)
-            if popped.right:
-                stack.push(popped.right)
             if popped.left:
                 stack.push(popped.left)
+            if popped.right:
+                stack.push(popped.right)
 
     # STRETCH Goals -------------------------
     # Note: Research may be required
 
     # Print In-order recursive DFT
     def pre_order_dft(self, node):
-        pass
+        print(self.value)
+        if self.left:
+            self.left.pre_order_dft(self)
+        if self.right:
+            self.right.pre_order_dft(self)
 
     # Print Post-order recursive DFT
     def post_order_dft(self, node):
-        pass
+        if self.left:
+            self.left.post_order_dft(self)
+        if self.right:
+            self.right.post_order_dft(self)
+        print(self.value)
